@@ -1,0 +1,6 @@
+Stwórz stronę wyświetlającą galerię zdjęć składającą się z miniatur (5 miniatur w rzędzie)
+Po kliknięciu zdjęcie powiększa się do około 80 % ekranu i wyświetla się nad miniaturami.
+Wyświetlanie galerii zrealizuj za pomocą jednej funkcji (stworzonej przez siebie)
+pobierającej wszystkie zdjęcia z danego katalogu (ilość i nazwy zdjeć są nieznane)
+1 funkcja pobiera zdjęcia ze wskazanego katalogu. menu ma umożliwiać wybranie min 3 różnych kategorii zdjęć.
+Ilość zdjęć min 11 w każdej kategorii
