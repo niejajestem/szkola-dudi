@@ -17,10 +17,13 @@
 </form>
     <body>
     <?php
-        $category = $_GET['category'];
+        @$category = $_GET['category'];
         GetAndShowImages($category);
 
         function GetAndShowImages($category){
+            if(!$category){
+                return 0;
+            }
             // $foo = file_get_contents("./images/buildings");
             // echo $foo;
             $photosArray = scandir("./images/".$category);
@@ -34,7 +37,7 @@
                     echo "<tr>";
                 }
                 echo "<td><div style='height:400px;'>";
-                echo "<img src='./images/".$category."/".$photosArray[$i]."' alt='$photosArray[$i]' style='width:250px;'>";
+                echo "<img src='./images/".$category."/".$photosArray[$i]."' alt='$photosArray[$i]'>";
                 echo "</div></td>";
                 if($i % 5 == 4){
                     echo "</tr>";

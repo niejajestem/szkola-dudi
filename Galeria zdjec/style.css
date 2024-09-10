@@ -5,3 +5,18 @@ header{
     text-align: center;
     font-size: 50px;
 }
+img{
+    width:250px;
+}
+img:hover{
+    position: fixed;
+    background-color: #000000aa;
+    padding-top: 6%;
+    padding-bottom: 6%;
+    padding-right: 10%;
+    padding-left: 10%;
+    left: 0;
+    top: 0;
+    height: 80%;
+    width: 80%;
+}
