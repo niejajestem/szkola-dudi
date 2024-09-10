@@ -7,14 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <header>Galeria</header>
-<body>
+<form action="#" method="get">
+    <select name="category" id="category">
+        <option value="buildings">Zdjęcia budynków</option>
+        <option value="computers">Zdjęcia komputerów</option>
+        <option value="nature">Zdjęcia przyrody</option>
+    </select>
+    <input type="submit">
+</form>
+    <body>
     <?php
-        GetAndShowImages();
+        $category = $_GET['category'];
+        GetAndShowImages($category);
 
-        function GetAndShowImages(){
-            // $foo = file_get_contents("./zdjecia/budynki");
+        function GetAndShowImages($category){
+            // $foo = file_get_contents("./images/buildings");
             // echo $foo;
-            $photosArray = scandir("./zdjecia/budynki");
+            $photosArray = scandir("./images/".$category);
             // print_r($photosArray);
             array_splice($photosArray, 0, 2);
             // echo print_r($photosArray)."<br>";
@@ -25,7 +34,7 @@
                     echo "<tr>";
                 }
                 echo "<td><div style='height:400px;'>";
-                echo "<img src='./zdjecia/budynki/".$photosArray[$i]."' alt='$photosArray[$i]' style='width:250px;'>";
+                echo "<img src='./images/".$category."/".$photosArray[$i]."' alt='$photosArray[$i]' style='width:250px;'>";
                 echo "</div></td>";
                 if($i % 5 == 4){
                     echo "</tr>";
