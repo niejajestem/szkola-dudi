@@ -1,5 +1,6 @@
 *{
     font-family: Helvetica;
+    background-color: antiquewhite;
 }
 header{
     text-align: center;
@@ -19,4 +20,7 @@ img:hover{
     top: 0;
     height: 80%;
     width: 80%;
+}
+form{
+    padding-bottom: 60px;
 }
