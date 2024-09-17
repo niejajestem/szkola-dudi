@@ -1,15 +1,19 @@
 *{
     font-family: Helvetica;
     background-color: antiquewhite;
+    
 }
 header{
     text-align: center;
     font-size: 50px;
 }
-img{
+img:hover{
+    cursor: pointer;
+}
+.small{
     width:250px;
 }
-img:hover{
+.big{
     position: fixed;
     background-color: #000000aa;
     padding-top: 6%;

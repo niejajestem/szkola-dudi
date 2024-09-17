@@ -36,8 +36,8 @@
                 if($i % 5 == 0){
                     echo "<tr>";
                 }
-                echo "<td><div style='height:400px;'>";
-                echo "<img src='./images/".$category."/".$photosArray[$i]."' alt='$photosArray[$i]'>";
+                echo "<td><div style='height:400px;' onClick='showImage($i)'>";
+                echo "<img src='./images/".$category."/".$photosArray[$i]."' alt='$photosArray[$i]' class='small' id='$i'>";
                 echo "</div></td>";
                 if($i % 5 == 4){
                     echo "</tr>";
@@ -46,5 +46,19 @@
             echo "</table>";
         }
     ?>
+    <script>
+    function showImage(imageId){
+        let image = document.getElementById(imageId);
+        if(image.className == "small"){
+            image.className = "big";
+        }else{
+            image.className = "small";
+        }
+
+    } 
+
+
+
+    </script>
 </body>
 </html>
