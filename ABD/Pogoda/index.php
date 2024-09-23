@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pogoda</title>
-</head>
-<body>
-    <form action="#" method="post">
-        <input type="number" name="temperatura" value="0" pattern="[0-9]{1-2}[.][0-9]{1}">
-        <input type="submit">
-    </form>
-    <?php
-    $temperatura = $_POST["temperatura"];
-    
+<?php
+
+    $now = date("Y-m-d H:i:s");
+
     $connect = mysqli_connect("localhost", "root", "", "dudi");
-    if(isset($temperatura) && $temperatura != 0){
-        $query = mysqli_query($connect, "INSERT INTO pogoda VALUES ('', '".$temperatura."', NOW())");
+    if(isset($_GET["temperature"]) && isset($_GET["action"]) && $_GET["action"] == "add"){
+        $temperature = $_GET["temperature"];
+        if($now>date("Y-m-d H:i:s")){
+            echo "Zły czas...";
+        }else
+        $query = mysqli_query($connect, "INSERT INTO pogoda VALUES ('', '".$temperature."', '".$now."')");
+        Header("Location: index.php");
     }
+
 
     $max = mysqli_fetch_row(mysqli_query($connect, "SELECT MAX(odczyt) FROM pogoda"));
     $min = mysqli_fetch_row(mysqli_query($connect, "SELECT MIN(odczyt) FROM pogoda"));
@@ -33,5 +28,19 @@
     echo "<p>".$count[0]."</p>";
 
     ?>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pogoda</title>
+</head>
+<body>
+    <form action="#" method="get">
+        <input type="hidden" name="action" value="add">
+        <input type="number" name="temperature" value="0">
+        <input type="datetime-local" name="date" max="<?php echo $now; ?>">
+        <input type="submit">
+    </form>
 </body>
 </html>
