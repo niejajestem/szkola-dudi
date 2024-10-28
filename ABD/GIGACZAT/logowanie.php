@@ -17,11 +17,11 @@
     if(!isset($login) || !isset($haslo) || $login == '' || $haslo == ''){
         return;
     }else{
-        $userExists = @mysqli_query($con, 'SELECT COUNT(id_uzytkownika) FROM uzytkownicy WHERE login = '.$login.';');
+        $userExists = @mysqli_query($con, "SELECT COUNT(id_uzytkownika) FROM uzytkownicy WHERE login = '$login';");
         if(mysqli_fetch_row($userExists)[0] == 1){
-            $checkPass = mysqli_query($con, 'SELECT haslo FROM uzytkownicy WHERE login ='.$login);
+            $checkPass = mysqli_query($con, "SELECT haslo FROM uzytkownicy WHERE login = '$login';");
             if(mysqli_fetch_row($checkPass)[0] == $haslo){
-                echo 'zalogowany';
+                Header("Location: gigaCzat.php?login=".$login);
             }else{
                 Header("Location: error.php?err=wrongPass");
             }

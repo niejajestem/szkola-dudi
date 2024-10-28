@@ -15,6 +15,7 @@
     @$login = $_POST['login'];
     @$haslo = $_POST['haslo'];
     @$hasloPow = $_POST['hasloPow'];
+    echo $login;
     
     if(!isset($login) || !isset($haslo) || $login == '' || $haslo == ''){
         return;        
@@ -24,9 +25,9 @@
         Header("Location: error.php?err=wrongLength");
     }else{
         $con = mysqli_connect('localhost', 'root', '', 'dudigigaczat');
-        $userExists = mysqli_query($con, 'SELECT COUNT(id_uzytkownika) FROM uzytkownicy WHERE login = '.$login.';');
+        $userExists = mysqli_query($con, "SELECT COUNT(id_uzytkownika) FROM uzytkownicy WHERE login = '$login';");
         if(mysqli_fetch_row($userExists)[0] == 0){
-            $createUser = mysqli_query($con, 'INSERT INTO uzytkownicy VALUES ("", '.$login.', '.$haslo.');');
+            $createUser = mysqli_query($con, "INSERT INTO uzytkownicy VALUES ('', '$login', '$haslo');");
         }else{
             Header("Location: error.php?err=userExists");
         }
