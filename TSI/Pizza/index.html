@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzeria u Dudiego</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>PIZZERIA U DUDIEGO</h1>
+        <button id="toggleKoszyk" onclick="toggleKoszyk()">Koszyk</button>
+    </div>
+
+    <div class="main">
+        <div class="zdjecia">
+            <div>
+                <p>Margherita</p>
+                <img src="./zdj/margherita.jpg" alt="pizza margherita">
+            </div>
+            <div>
+                <p>Capricciosa</p>
+                <img src="./zdj/capricciosa.jpg" alt="pizza capricciosa">
+            </div>
+            <div>
+                <p>Pepperoni</p>
+                <img src="./zdj/pepperoni.jpg" alt="pizza pepperoni">
+            </div>
+            <div>
+                <p>Salami</p>
+                <img src="./zdj/salami.jpg" alt="pizza salami">
+            </div>
+            <div>
+                <p>Hawajska</p>
+                <img src="./zdj/hawajska.jpg" alt="pizza hawajska">
+            </div>
+        </div>
+
+        <div class="wyborPizzy">
+            <div class="pizze">
+                <div>
+                    <h3 for="margherita">Margherita</h3>
+                    <p>Ser, sos pomidorowy, bazylia</p>
+                    <p>Cena: 25zł <input type="radio" name="pizza" id="margherita"></p>
+                </div>
+                <div>
+                    <h3 for="capricciosa">Capricciosa</h3>
+                    <p>Ser, szynka, pieczarki, oliwki</p>
+                    <p>Cena: 32zł <input type="radio" name="pizza" id="capricciosa"></p>
+                </div>
+                <div>
+                    <h3 for="pepperoni">Pepperoni</h3>
+                    <p>Ser, sos pomidorowy, pepperoni</p>
+                    <p>Cena: 30zł <input type="radio" name="pizza" id="pepperoni"></p>
+                </div>
+                <div>
+                    <h3 for="salami">Salami</h3>
+                    <p>Ser, sos pomidorowy, bazylia, salami</p>
+                    <p>Cena: 31zł <input type="radio" name="pizza" id="salami"></p>
+                </div>
+                <div>
+                    <h3 for="hawajska">Hawajska</h3>
+                    <p>Ser, sos pomidorowy, szynka, ananas</p>
+                    <p>Cena: 34zł <input type="radio" name="pizza" id="hawajska"></p>
+                </div>
+            </div>
+
+            <div class="dodatki">
+                <h3>Dodatki</h3>
+                <div>
+                    <label for="dodSer">Ser mozzarella - 4zł</label>
+                    <input type="checkbox" name="dodatki" id="dodSer">
+                </div>
+                <div>
+                    <label for="dodOli">Oliwki - 6zł</label>
+                    <input type="checkbox" name="dodatki" id="dodOli">
+                </div>
+                <div>
+                    <label for="dodSal">Salami - 5zł</label>
+                    <input type="checkbox" name="dodatki" id="dodSal">
+                </div>
+                <div>
+                    <label for="sosCzsn">Sos czosnkowy - 3zł</label>
+                    <input type="checkbox" name="dodatki" id="sosCzsn">
+                </div>
+                <div>
+                    <label for="sosPom">Sos pomidorowy - 3zł</label>
+                    <input type="checkbox" name="dodatki" id="sosPom">
+                </div>
+            </div>
+
+            <div class="dodaj-do-koszyka">
+                <button id="dodajDoKoszyka">Dodaj pizzę do koszyka</button>
+            </div>
+        </div>
+    </div>
+
+    <aside class="koszyk" id="koszyk">
+        <h3>Koszyk</h3>
+        <p>Twoje zamówienie jest puste.</p>
+    </aside>
+
+    <script>
+        function toggleKoszyk() {
+            const koszyk = document.getElementById('koszyk');
+            koszyk.classList.toggle('open');
+        }
+
+        document.getElementById('dodajDoKoszyka').addEventListener('click', function () {
+            let gotowaPizza;
+
+            let wyborPizzy = document.getElementsByName("pizza");
+            let typPizzy;
+            for(let i = 0; i < wyborPizzy.length; i++){
+                if(wyborPizzy[i].checked){
+                    typPizzy = wyborPizzy[i].id;
+                }
+            }
+            
+            let wyborDodatkow = document.getElementsByName("dodatki");
+            let dodatki = [];
+            for(let i = 0; i < wyborDodatkow.length; i++){
+                if(wyborDodatkow[i].checked){
+                    dodatki.push(wyborDodatkow[i].id);
+                }
+            }
+
+            if(typPizzy == undefined){
+                alert("Nie wybrałeś pizzy");
+            }else{
+                gotowaPizza = dodatki;
+                gotowaPizza.unshift(typPizzy);
+                console.log(gotowaPizza);
+                
+            }
+            // console.log(typPizzy);
+            // console.log(dodatki);
+        });
+    </script>
+</body>
+</html>
