@@ -100,105 +100,158 @@
     </aside>
 
     <script>
-        let pizzeWKoszyku = wczytajCiastka();
-    
-        function ustawCiastka(name, value, days) {
-            let date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${name}=${encodeURIComponent(value)};expires=${date.toUTCString()};path=/`;
+    function pieniuj(){
+        console.log(pizzeWKoszyku);
+    }
+
+    let pizzeWKoszyku = loadKoszyk();
+
+    const pizzaPrices = {
+        "Margherita": 25,
+        "Capricciosa": 32,
+        "Pepperoni": 30,
+        "Salami": 31,
+        "Hawajska": 34
+    };
+
+    function setCookie(name, value, days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = `${name}=${encodeURIComponent(value)};expires=${date.toUTCString()};path=/`;
+    }
+
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(';');
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookie = cookieArr[i].trim();
+            if (cookie.startsWith(name + "=")) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
         }
-    
-        function wezCiastka(name) {
-            let cookieArr = document.cookie.split(';');
-            for (let i = 0; i < cookieArr.length; i++) {
-                let cookie = cookieArr[i].trim();
-                if (cookie.startsWith(name + "=")) {
-                    return decodeURIComponent(cookie.substring(name.length + 1));
+        return null;
+    }
+
+    function deleteCookie(name) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+    }
+
+    function saveKoszyk() {
+        setCookie('pizzeWKoszyku', JSON.stringify(pizzeWKoszyku), 5);
+    }
+
+    function loadKoszyk() {
+        let savedKoszyk = getCookie('pizzeWKoszyku');
+        return savedKoszyk ? JSON.parse(savedKoszyk) : [];
+    }
+
+    function odswiezKoszyk() {
+        let koszyk = document.getElementById("koszyk");
+        if (pizzeWKoszyku.length == 0) {
+            koszyk.innerHTML = "<div class='pizzaWKoszyku'><p><h4>Nie wybrałeś żadnej pizzy</h4></p></div>";
+        } else {
+            koszyk.innerHTML = "";
+            let totalCenaKoszyka = 0;
+
+            pizzeWKoszyku.forEach((pizza, index) => {
+                let dodatki = pizza.slice(1);
+                let dodatkiString = dodatki.join(", ");
+                let cssClass = (index % 2) ? "szare" : "";
+                let cenaPizza = pizzaPrices[pizza[0]];
+                let cenaDodatkow = obliczCeneDodatkow(dodatki);
+                let cenaCalkowita = cenaPizza + cenaDodatkow;
+
+                // Sumujemy do całkowitej ceny koszyka
+                totalCenaKoszyka += cenaCalkowita;
+
+                if (dodatki.length == 0) {
+                    koszyk.innerHTML += `<div class='pizzaWKoszyku ${cssClass}'><p><b>${pizza[0]}</b> - ${cenaCalkowita}zł<br><button class='usunPizze' onclick='usunPizzeZKoszyka(${index})'>Usuń</button></p></div>`;
+                } else {
+                    koszyk.innerHTML += `<div class='pizzaWKoszyku ${cssClass}'><p><b>${pizza[0]}</b> - ${cenaCalkowita}zł<br>Dodatki: ${dodatkiString}<br><button class='usunPizze' onclick='usunPizzeZKoszyka(${index})'>Usuń</button></p></div>`;
                 }
+            });
+
+            // Dodanie całkowitej ceny na dole koszyka
+            koszyk.innerHTML += `
+                <div class="totalCenaKoszyka">
+                    <hr>
+                    <div class='pizzaWKoszyku'><h4>Całkowita cena: ${totalCenaKoszyka}zł</h4></div>
+                </div>
+            `;
+        }
+    }
+
+    function obliczCeneDodatkow(dodatki) {
+        const dodatkiPrices = {
+            "dodSer": 4,
+            "dodOli": 6,
+            "dodSal": 5,
+            "sosCzsn": 3,
+            "sosPom": 3
+        };
+
+        return dodatki.reduce((sum, dodatek) => sum + (dodatkiPrices[dodatek] || 0), 0);
+    }
+
+    function usunPizzeZKoszyka(index) {
+        pizzeWKoszyku.splice(index, 1);
+        saveKoszyk();  // Save the updated array to the cookie
+        odswiezKoszyk();
+    }
+
+    function otworzKoszyk() {
+        odswiezKoszyk();
+        const koszyk = document.getElementById('koszyk');
+        koszyk.classList.toggle('open');
+    }
+
+    document.getElementById('dodajDoKoszyka').addEventListener('click', function () {
+        let gotowaPizza;
+        let wyborPizzy = document.getElementsByName("pizza");
+        let typPizzy;
+
+        for (let i = 0; i < wyborPizzy.length; i++) {
+            if (wyborPizzy[i].checked) {
+                typPizzy = wyborPizzy[i].value;
             }
-            return null;
         }
-    
-        function zjedzCiastka(name) {
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
-        }
-    
-        function zapiszCiastka() {
-            ustawCiastka('pizzeWKoszyku', JSON.stringify(pizzeWKoszyku), 5);
-        }
-    
-        function wczytajCiastka() {
-            let savedKoszyk = wezCiastka('pizzeWKoszyku');
-            return savedKoszyk ? JSON.parse(savedKoszyk) : [];
-        }
-    
-        function odswiezKoszyk() {
-            let koszyk = document.getElementById("koszyk");
-            if (pizzeWKoszyku.length == 0) {
-                koszyk.innerHTML = "<div class='pizzaWKoszyku'><p><h4>Nie wybrałeś żadnej pizzy</h4></p></div>";
-            } else {
-                koszyk.innerHTML = "";
-                pizzeWKoszyku.forEach((pizza, index) => {
-                    let dodatki = pizza.slice(1);
-                    let dodatkiString = dodatki.join(", ");
-                    let cssClass = (index % 2) ? "szare" : "";
-    
-                    if (dodatki.length == 0) {
-                        koszyk.innerHTML += `<div class='pizzaWKoszyku ${cssClass}'><p><b>${pizza[0]}</b><br><button class='usunPizze' onclick='usunPizzeZKoszyka(${index})'>Usuń</button></p></div>`;
-                    } else {
-                        koszyk.innerHTML += `<div class='pizzaWKoszyku ${cssClass}'><p><b>${pizza[0]}</b> - ${dodatkiString}<br><button class='usunPizze' onclick='usunPizzeZKoszyka(${index})'>Usuń</button></p></div>`;
-                    }
-                });
+
+        let wyborDodatkow = document.getElementsByName("dodatki");
+        let dodatki = [];
+
+        for (let i = 0; i < wyborDodatkow.length; i++) {
+            if (wyborDodatkow[i].checked) {
+                dodatki.push(wyborDodatkow[i].id);
             }
         }
-    
-        function usunPizzeZKoszyka(index) {
-            pizzeWKoszyku.splice(index, 1);
-            zapiszCiastka();
-            odswiezKoszyk();
+
+        if (typPizzy == undefined) {
+            alert("Nie wybrałeś pizzy");
+        } else {
+            gotowaPizza = dodatki;
+            gotowaPizza.unshift(typPizzy);
+            pizzeWKoszyku.push(gotowaPizza);
+            saveKoszyk();  // Save the updated array to the cookie
         }
-    
-        function otworzKoszyk() {
-            odswiezKoszyk();
-            const koszyk = document.getElementById('koszyk');
-            koszyk.classList.toggle('open');
-        }
-    
-        document.getElementById('dodajDoKoszyka').addEventListener('click', function () {
-            let gotowaPizza;
-            let wyborPizzy = document.getElementsByName("pizza");
-            let typPizzy;
-    
-            for (let i = 0; i < wyborPizzy.length; i++) {
-                if (wyborPizzy[i].checked) {
-                    typPizzy = wyborPizzy[i].value;
-                }
-            }
-    
-            let wyborDodatkow = document.getElementsByName("dodatki");
-            let dodatki = [];
-    
-            for (let i = 0; i < wyborDodatkow.length; i++) {
-                if (wyborDodatkow[i].checked) {
-                    dodatki.push(wyborDodatkow[i].id);
-                }
-            }
-    
-            if (typPizzy == undefined) {
-                alert("Nie wybrałeś pizzy");
-            } else {
-                gotowaPizza = dodatki;
-                gotowaPizza.unshift(typPizzy);
-                pizzeWKoszyku.push(gotowaPizza);
-                zapiszCiastka();  // Save the updated array to the cookie
-            }
-    
-            odswiezKoszyk();
-        });
-    
-        // Refresh the cart on page load
-        window.onload = odswiezKoszyk;
-    </script>
+
+        odswiezKoszyk();
+    });
+
+    function obliczCeneDodatkow(dodatki) {
+        const dodatkiPrices = {
+            "dodSer": 4,
+            "dodOli": 6,
+            "dodSal": 5,
+            "sosCzsn": 3,
+            "sosPom": 3
+        };
+
+        return dodatki.reduce((sum, dodatek) => sum + (dodatkiPrices[dodatek] || 0), 0);
+    }
+
+    // Refresh the cart on page load
+    window.onload = odswiezKoszyk;
+</script>
+
     
 </body>
 </html>
