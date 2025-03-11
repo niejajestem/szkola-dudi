@@ -1,0 +1,9 @@
+ Zapytanie 3: tworzące użytkownika andrzej na localhost z hasłem andrzej1@ 
+
+ Zapytanie 4: nadające użytkownikowi andrzej prawo do przeglądania danych i zmieniania 
+danych w tabeli samochody
+
+SELECT marka, model FROM samochody WHERE kolor = 'czerwony'
+
+UPDATE `samochody` SET `stan`='dobry' WHERE rocznik = 2003
+
