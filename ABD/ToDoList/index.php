@@ -23,7 +23,7 @@
         background-color: orange;
     }
 
-    .przekroczone{
+    .poTerminie{
         color: white;
         background-color: red;
     }
@@ -55,9 +55,9 @@ while($zadania_table = mysqli_fetch_array($query)){
     }else{
         $today = date("Y-m-d");
         if($zadania_table['termin'] > $today){
-            $class = 'przekroczone';
-        }else{
             $class = 'nieZrobione';
+        }else{
+            $class = 'poTerminie';
         }
     }
     // print_r($zadania_table);
@@ -69,7 +69,7 @@ while($zadania_table = mysqli_fetch_array($query)){
     echo $zadania_table['zadanie'];
     echo '</td>';
     echo '<td>';
-    echo '<a href="edytuj.php?id='.$zadania_table['id_zadania'].'">[Edytuj]';
+    echo '<a href="edytuj.php?id='.$zadania_table['id_zadania'].'&termin='.$zadania_table['termin'].'&zadanie='.$zadania_table['zadanie'].'&komentarz='.$zadania_table['komentarz'].'">[Edytuj]';
     echo '<a href="usun.php?id='.$zadania_table['id_zadania'].'">[Usuń]';
     echo '</td>';
     echo '<td>';
