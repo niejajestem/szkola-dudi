@@ -1,0 +1,4 @@
+SELECT cena, pojemnosc FROM farby WHERE kolor = 'czerwony';
+SELECT kolor, ROUND(cena / pojemnosc, 2) AS "cena jednostkowa" FROM farby;
+SELECT f.kolor, s.liczba_puszek FROM sciany s JOIN farby f ON s.id_farby = f.id_farby WHERE s.id_pomieszczenia = 3;
+CREATE VIEW pomieszczenie1 AS SELECT id_sciany, id_farby, liczba_puszek FROM sciany WHERE id_pomieszczenia = 1;

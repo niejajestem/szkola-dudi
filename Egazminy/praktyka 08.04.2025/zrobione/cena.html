@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>malarz</title>
+    <link rel="stylesheet" href="styl_1.css">
+</head>
+<body>
+    <header>
+        <h1>Malowanie pokoi i biur</h1>
+    </header>
+
+    <nav>
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="mieszamy.html">Mieszamy</a></li>
+            <li><a href="cena.html">Wyceniamy</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Zapotrzebowanie na farbę</h2>
+        <label for="powierzchnia">Powierzchnia malowania (m<sup>2</sup>):</label>
+        <input type="number" id="powierzchnia" name="powierzchnia" min="0" step="any">
+        <br><br> <button onclick="policzFarbe()">Policz</button>
+        <p id="wynik"></p> </main>
+
+    <aside>
+        <img src="obraz.png" alt="Próbki farb">
+    </aside>
+
+    <footer>
+        <h3>MALARZ</h3>
+        <p>Stronę opracował: [Numer zdającego]</p> </footer>
+
+    <script>
+        function policzFarbe() {
+            const powierzchniaInput = document.getElementById('powierzchnia');
+            const powierzchnia = parseFloat(powierzchniaInput.value);
+
+            const wynikElement = document.getElementById('wynik');
+
+            if (isNaN(powierzchnia) || powierzchnia <= 0) {
+                wynikElement.innerText = "Proszę podać poprawną, dodatnią powierzchnię.";
+                return;
+            }
+
+            const litry = powierzchnia / 4;
+
+            const puszki = Math.ceil(litry);
+
+            wynikElement.innerText = "Liczba potrzebnych puszek: " + puszki;
+        }
+    </script>
+</body>
+</html>
